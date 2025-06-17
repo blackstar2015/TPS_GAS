@@ -1,5 +1,5 @@
 
-#include "TPSCharacterBase.h"
+#include "Character/TPSCharacterBase.h"
 
 ATPSCharacterBase::ATPSCharacterBase()
 {
