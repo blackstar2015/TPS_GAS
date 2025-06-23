@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "Interaction/EnemyInterface.h"
 #include "TPSPlayerController.generated.h"
 
 struct FInputActionValue;
@@ -18,12 +19,16 @@ class TPSGAS_API ATPSPlayerController : public APlayerController
 	GENERATED_BODY()
 	
 public:
-ATPSPlayerController();
+	ATPSPlayerController();
+	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<AActor> CurrentTarget = nullptr;
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
 
+private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* MappingContext;
 
@@ -40,4 +45,11 @@ protected:
 	void Look(const FInputActionValue& Value);
 	void Jump(const FInputActionValue& InputActionValue);
 	void StopJumping(const FInputActionValue& InputActionValue);
+
+	void CameraTrace();
+
+	static void HighlightActor(AActor* InActor);
+	static void UnHighlightActor(AActor* InActor);
+	TScriptInterface<IEnemyInterface> LastActor;
+	TScriptInterface<IEnemyInterface> ThisActor;
 };

@@ -4,14 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "TPSCharacterBase.h"
+#include "Interaction/EnemyInterface.h"
 #include "TPSEnemyCharacter.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TPSGAS_API ATPSEnemyCharacter : public ATPSCharacterBase
+class TPSGAS_API ATPSEnemyCharacter : public ATPSCharacterBase, public IEnemyInterface
 {
 	GENERATED_BODY()
-	
+
+public:
+	ATPSEnemyCharacter();
+	virtual void HighlightActor() override;
+	virtual void UnHighlightActor() override;
 };
