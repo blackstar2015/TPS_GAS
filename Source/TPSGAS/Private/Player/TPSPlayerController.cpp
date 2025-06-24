@@ -37,12 +37,6 @@ void ATPSPlayerController::BeginPlay()
 	
 	bShowMouseCursor = false;
 	DefaultMouseCursor = EMouseCursor::Default;
-
-	// FInputModeGameAndUI InputModeData;
-	// FInputModeGameOnly GameOnlyInputData;
-	// InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::LockAlways);
-	// InputModeData.SetHideCursorDuringCapture(true);
-	// SetInputMode(InputModeData);
 }
 
 void ATPSPlayerController::SetupInputComponent()
@@ -107,52 +101,6 @@ void ATPSPlayerController::StopJumping(const FInputActionValue& InputActionValue
 
 void ATPSPlayerController::CameraTrace()
 {
-	// FHitResult CameraHitResult;
-	// // Get screen center and convert to world space trace
-	// FVector WorldLocation, WorldDirection;
-	// int32 ViewportSizeX, ViewportSizeY;
-	// GetViewportSize(ViewportSizeX, ViewportSizeY);
-	//
-	// FVector2D ScreenCenter(ViewportSizeX / 2.f, ViewportSizeY / 2.f);
-	//
-	// if (DeprojectScreenPositionToWorld(ScreenCenter.X, ScreenCenter.Y, WorldLocation, WorldDirection))
-	// {
-	// 	FVector TraceStart = WorldLocation;
-	// 	FVector TraceEnd = TraceStart + (WorldDirection * 5000.f); // Adjust trace distance
-	//
-	// 	FCollisionQueryParams Params;
-	// 	Params.AddIgnoredActor(GetPawn());
-	//
-	// 	const ECollisionChannel TraceChannel = ECC_Visibility;
-	// 	if (GetWorld()->SweepMultiByChannel(CameraHitResult, TraceStart, TraceEnd, TraceChannel, Params))
-	// 	if (GetWorld()->LineTraceSingleByChannel(CameraHitResult, TraceStart, TraceEnd, TraceChannel, Params))
-	// 	{
-	// 		LastActor = ThisActor;
-	//
-	// 		if (IsValid(CameraHitResult.GetActor()) && CameraHitResult.GetActor()->Implements<UEnemyInterface>())
-	// 		{
-	// 			ThisActor = CameraHitResult.GetActor();
-	// 		}
-	// 		else
-	// 		{
-	// 			ThisActor = nullptr;
-	// 		}
-	//
-	// 		if (LastActor != ThisActor)
-	// 		{
-	// 			if (LastActor) LastActor->UnHighlightActor();
-	// 			if (ThisActor) ThisActor->HighlightActor();
-	// 		}
-	// 		if (!CameraHitResult.bBlockingHit) return;
-	// 		CurrentTarget = CameraHitResult.GetActor();
-	// 		if (!CurrentTarget->Implements<UEnemyInterface>()) return;
-	// 		DrawDebugLine(GetWorld(), WorldLocation, CurrentTarget->GetActorLocation(),
-	// 			FColor::Green,false, 2);
-	// 		DrawDebugSphere(GetWorld(), CurrentTarget->GetActorLocation(), 200.f, 20,
-	// 			FColor::Green, false, .1);
-	// 	}
-	// }
-
 	FVector WorldLocation, WorldDirection;
 	int32 ViewportSizeX, ViewportSizeY;
 	GetViewportSize(ViewportSizeX, ViewportSizeY);
@@ -171,7 +119,6 @@ void ATPSPlayerController::CameraTrace()
 	Params.AddIgnoredActor(GetPawn());
 
 	TArray<FHitResult> HitResults;
-	const float TraceRadius = 200.f;
 	const ECollisionChannel TraceChannel = ECC_Visibility;
 
 	bool bHit = GetWorld()->SweepMultiByChannel(
@@ -219,7 +166,10 @@ void ATPSPlayerController::CameraTrace()
 	if (IsValid(CurrentTarget))
 	{
 		DrawDebugLine(GetWorld(), WorldLocation, CurrentTarget->GetActorLocation(), FColor::Green, false, .1f, 0, 1.0f);
+		DrawDebugLine(GetWorld(), WorldLocation, TraceEnd, FColor::Blue, false, .1f, 0, 1.0f);
+	}
+	else
+	{
 		DrawDebugLine(GetWorld(), WorldLocation, TraceEnd, FColor::Red, false, .1f, 0, 1.0f);
-		DrawDebugSphere(GetWorld(), CurrentTarget->GetActorLocation(), 50.f, 20, FColor::Green, false, 0.1f);
 	}
 }

@@ -41,6 +41,9 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere)
+	float TraceRadius = 50.f;
+
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Jump(const FInputActionValue& InputActionValue);
@@ -48,8 +51,6 @@ private:
 
 	void CameraTrace();
 
-	static void HighlightActor(AActor* InActor);
-	static void UnHighlightActor(AActor* InActor);
 	TScriptInterface<IEnemyInterface> LastActor;
 	TScriptInterface<IEnemyInterface> ThisActor;
 };
