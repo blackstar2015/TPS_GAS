@@ -3,16 +3,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemInterface.h"
+#include "AttributeSet.h"
 #include "GameFramework/Character.h"
 #include "TPSCharacterBase.generated.h"
 
 UCLASS()
-class TPSGAS_API ATPSCharacterBase : public ACharacter
+class TPSGAS_API ATPSCharacterBase : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
 	ATPSCharacterBase();
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 protected:
 	// Called when the game starts or when spawned
@@ -20,4 +24,11 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
+
+	virtual void InitAbilityActorInfo();
+	
+	UPROPERTY()
+	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+
+	TObjectPtr<UAttributeSet> AttributeSet;
 };

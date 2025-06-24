@@ -112,7 +112,7 @@ void ATPSPlayerController::CameraTrace()
 	}
 
 	FVector TraceStart = WorldLocation;
-	FVector TraceEnd = TraceStart + (WorldDirection * 5000.f);
+	FVector TraceEnd = TraceStart + (WorldDirection * 1500.f);
 
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(GetPawn());
@@ -164,11 +164,11 @@ void ATPSPlayerController::CameraTrace()
 
 	if (IsValid(CurrentTarget))
 	{
-		DrawDebugLine(GetWorld(), WorldLocation, CurrentTarget->GetActorLocation(), FColor::Green, false, .1f, 0, 1.0f);
-		DrawDebugLine(GetWorld(), WorldLocation, TraceEnd, FColor::Blue, false, .1f, 0, 1.0f);
+		//DrawDebugLine(GetWorld(), WorldLocation, CurrentTarget->GetActorLocation(), FColor::Green, false, .1f, 0, 1.0f);
+		//DrawDebugLine(GetWorld(), WorldLocation, TraceEnd, FColor::Blue, false, .1f, 0, 1.0f);
 	}
 	else
 	{
-		DrawDebugLine(GetWorld(), WorldLocation, TraceEnd, FColor::Red, false, .1f, 0, 1.0f);
+		//DrawDebugLine(GetWorld(), WorldLocation, TraceEnd, FColor::Red, false, .1f, 0, 1.0f);
 	}
 }

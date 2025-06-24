@@ -3,13 +3,15 @@
 
 #include "Character/TPSPlayerCharacter.h"
 
-#include "EnhancedInputComponent.h"
-#include "EnhancedInputSubsystems.h"
+#include <AbilitySystem/TPSAbilitySystemComponent.h>
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Player/TPSPlayerController.h"
+#include "Player/TPSPlayerState.h"
 #include "TPSGAS/TPSGASCharacter.h"
+#include "UI/HUD/TPSHUD.h"
 
 ATPSPlayerCharacter::ATPSPlayerCharacter()
 {
@@ -47,4 +49,36 @@ ATPSPlayerCharacter::ATPSPlayerCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+}
+
+void ATPSPlayerCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	InitAbilityActorInfo();
+}
+
+void ATPSPlayerCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	InitAbilityActorInfo();
+}
+
+void ATPSPlayerCharacter::InitAbilityActorInfo()
+{
+	//Init Ability Actor info for the server
+	ATPSPlayerState* TPSPlayerState = GetPlayerState<ATPSPlayerState>();
+	check(TPSPlayerState);
+	 TPSPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(TPSPlayerState,this);
+	 //Cast<UTPSAbilitySystemComponent>(TPSPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
+	 AbilitySystemComponent = TPSPlayerState->GetAbilitySystemComponent();
+	 AttributeSet = TPSPlayerState->GetAttributeSet();
+	 //OnASCRegistered.Broadcast(AbilitySystemComponent);
+	//AbilitySystemComponent->RegisterGameplayTagEvent(FTPSGameplayTags::Get().Debuff_Stun, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &ATPSCharacter::StunTagChanged);
+	if(ATPSPlayerController* TPSPlayerController = Cast<ATPSPlayerController>(GetController()))
+	{
+		if(ATPSHUD* TPSHUD = Cast<ATPSHUD>(TPSPlayerController->GetHUD()))
+		{
+			TPSHUD->InitOverlay(TPSPlayerController,TPSPlayerState,AbilitySystemComponent,AttributeSet);
+		}
+	}
 }
