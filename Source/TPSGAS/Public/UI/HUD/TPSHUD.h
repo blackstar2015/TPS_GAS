@@ -6,6 +6,8 @@
 #include "GameFramework/HUD.h"
 #include "TPSHUD.generated.h"
 
+class UAttributeMenuWidgetController;
+class USpellMenuWidgetController;
 class UAttributeSet;
 class UAbilitySystemComponent;
 class UTPSOverlayWidgetController;
@@ -22,8 +24,8 @@ class TPSGAS_API ATPSHUD : public AHUD
 public:
 
 	UTPSOverlayWidgetController* GetOverlayWidgetController(const FWidgetControllerParams& WCParams);
-	// UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const FWidgetControllerParams& WCParams);
-	// USpellMenuWidgetController* GetSpellMenuWidgetController(const FWidgetControllerParams& WCParams);
+	UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const FWidgetControllerParams& WCParams);
+	USpellMenuWidgetController* GetSpellMenuWidgetController(const FWidgetControllerParams& WCParams);
 	void InitOverlay(APlayerController* PC,APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS);
 
 private:
@@ -37,13 +39,13 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UTPSOverlayWidgetController> OverlayWidgetControllerClass;
 	
-	// UPROPERTY()
-	// TObjectPtr<UAttributeMenuWidgetController> AttributeMenuWidgetController;
-	// UPROPERTY(EditAnywhere)
-	// TSubclassOf<UAttributeMenuWidgetController> AttributeMenuWidgetControllerClass;
-	//
-	// UPROPERTY()
-	// TObjectPtr<USpellMenuWidgetController> SpellMenuWidgetController;
-	// UPROPERTY(EditAnywhere)
-	// TSubclassOf<USpellMenuWidgetController> SpellMenuWidgetControllerClass;
+	UPROPERTY()
+	TObjectPtr<UAttributeMenuWidgetController> AttributeMenuWidgetController;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UAttributeMenuWidgetController> AttributeMenuWidgetControllerClass;
+	
+	UPROPERTY()
+	TObjectPtr<USpellMenuWidgetController> SpellMenuWidgetController;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<USpellMenuWidgetController> SpellMenuWidgetControllerClass;
 };

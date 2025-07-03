@@ -15,6 +15,7 @@
 #include "Camera/CameraComponent.h"
 #include "Game/TPSGameMode.h"
 //#include "Game/LoadScreenSaveGame.h"
+#include "AbilitySystem/Data/LevelUpInfo.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -95,73 +96,151 @@ void ATPSPlayerCharacter::Die(const FVector& DeathImpulse)
 
 void ATPSPlayerCharacter::AddToXP_Implementation(int32 InXP)
 {
-	IPlayerInterface::AddToXP_Implementation(InXP);
+	ATPSPlayerState* TPSPlayerState = GetPlayerState<ATPSPlayerState>();
+	check(TPSPlayerState);
+	TPSPlayerState->AddToXP(InXP);
 }
 
 void ATPSPlayerCharacter::LevelUp_Implementation()
 {
-	IPlayerInterface::LevelUp_Implementation();
+	MulticastLevelUpParticles();
 }
 
 void ATPSPlayerCharacter::AddToPlayerLevel_Implementation(int32 InPlayerLevel)
 {
-	IPlayerInterface::AddToPlayerLevel_Implementation(InPlayerLevel);
+	ATPSPlayerState* TPSPlayerState = GetPlayerState<ATPSPlayerState>();
+	check(TPSPlayerState);
+	TPSPlayerState->AddToLevel(InPlayerLevel);
+
+	if (UTPSAbilitySystemComponent* TPSASC = Cast<UTPSAbilitySystemComponent>(GetAbilitySystemComponent()))
+	{
+		TPSASC->UpdateAbilityStatuses(TPSPlayerState->GetPlayerLevel());		
+	}
 }
 
 void ATPSPlayerCharacter::AddToAttributePoints_Implementation(int32 InAttributePoints)
 {
-	IPlayerInterface::AddToAttributePoints_Implementation(InAttributePoints);
+	ATPSPlayerState* TPSPlayerState = GetPlayerState<ATPSPlayerState>();
+	check(TPSPlayerState);
+	TPSPlayerState->AddToAttributePoints(InAttributePoints);
 }
 
 void ATPSPlayerCharacter::AddToSpellPoints_Implementation(int32 InSpellPoints)
 {
-	IPlayerInterface::AddToSpellPoints_Implementation(InSpellPoints);
+	ATPSPlayerState* TPSPlayerState = GetPlayerState<ATPSPlayerState>();
+	check(TPSPlayerState);
+	TPSPlayerState->AddToSpellPoints(InSpellPoints);
 }
 
 int32 ATPSPlayerCharacter::GetXP_Implementation() const
 {
-	return IPlayerInterface::GetXP_Implementation();
+	const ATPSPlayerState* TPSPlayerState = GetPlayerState<ATPSPlayerState>();
+	check(TPSPlayerState);
+	return TPSPlayerState->GetXP();
 }
 
 int32 ATPSPlayerCharacter::FindLevelForXP_Implementation(int32 InXP) const
 {
-	return IPlayerInterface::FindLevelForXP_Implementation(InXP);
+	const ATPSPlayerState* TPSPlayerState = GetPlayerState<ATPSPlayerState>();
+	check(TPSPlayerState);
+	return TPSPlayerState->LevelUpInfo->FindLevelForXP(InXP);
 }
 
 int32 ATPSPlayerCharacter::GetAttributePointsReward_Implementation(int32 Level) const
 {
-	return IPlayerInterface::GetAttributePointsReward_Implementation(Level);
+	ATPSPlayerState* TPSPlayerState = GetPlayerState<ATPSPlayerState>();
+	check(TPSPlayerState);
+	return TPSPlayerState->LevelUpInfo->LevelUpInformation[Level].AttributePointReward;
 }
 
 int32 ATPSPlayerCharacter::GetSpellPointsReward_Implementation(int32 Level) const
 {
-	return IPlayerInterface::GetSpellPointsReward_Implementation(Level);
+	ATPSPlayerState* TPSPlayerState = GetPlayerState<ATPSPlayerState>();
+	check(TPSPlayerState);
+	return TPSPlayerState->LevelUpInfo->LevelUpInformation[Level].SpellPointReward;
 }
 
 int32 ATPSPlayerCharacter::GetAttributePoints_Implementation() const
 {
-	return IPlayerInterface::GetAttributePoints_Implementation();
+	ATPSPlayerState* TPSPlayerState = GetPlayerState<ATPSPlayerState>();
+	check(TPSPlayerState);
+	return TPSPlayerState->GetAttributePoints();
 }
 
 int32 ATPSPlayerCharacter::GetSpellPoints_Implementation() const
 {
-	return IPlayerInterface::GetSpellPoints_Implementation();
+	ATPSPlayerState* TPSPlayerState = GetPlayerState<ATPSPlayerState>();
+	check(TPSPlayerState);
+	return TPSPlayerState->GetSpellPoints();
 }
 
 void ATPSPlayerCharacter::ShowMagicCircle_Implementation(UMaterialInterface* DecalMaterial)
 {
-	IPlayerInterface::ShowMagicCircle_Implementation(DecalMaterial);
+	if(ATPSPlayerController* TPSPlayerController = Cast<ATPSPlayerController>(GetController()))
+	{
+		TPSPlayerController->ShowMagicCircle(DecalMaterial);
+		TPSPlayerController->bShowMouseCursor = false;
+	}
 }
 
 void ATPSPlayerCharacter::HideMagicCircle_Implementation()
 {
-	IPlayerInterface::HideMagicCircle_Implementation();
+	if(ATPSPlayerController* TPSPlayerController = Cast<ATPSPlayerController>(GetController()))
+	{
+		TPSPlayerController->HideMagicCircle();
+		TPSPlayerController->bShowMouseCursor = true;
+	}
 }
-
-void ATPSPlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
-{
-	IPlayerInterface::SaveProgress_Implementation(CheckpointTag);
-}
+//
+// void ATPSPlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
+// {
+// 	ATPSGameModeBase* TPSGameMode = Cast<ATPSGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+// 	if (TPSGameMode)
+// 	{
+// 		ULoadScreenSaveGame* SaveData = TPSGameMode->RetrieveInGameSaveData();
+// 		if (SaveData == nullptr) return;
+// 		SaveData->PlayerStartTag = CheckpointTag;
+//
+// 		if(ATPSPlayerState* TPSPlayerState = GetPlayerState<ATPSPlayerState>())
+// 		{
+// 			SaveData->PlayerLevel = TPSPlayerState->GetPlayerLevel();
+// 			SaveData->Xp = TPSPlayerState->GetXP();
+// 			SaveData->SpellPoints = TPSPlayerState->GetSpellPoints();
+// 			SaveData->AttributePoints =TPSPlayerState->GetAttributePoints();			
+// 		}
+// 		//Get primary attributes
+// 		SaveData->Strength = UTPSAttributeSet::GetStrengthAttribute().GetNumericValue(GetAttributeSet());
+// 		SaveData->Intelligence = UTPSAttributeSet::GetIntelligenceAttribute().GetNumericValue(GetAttributeSet());
+// 		SaveData->Resilience = UTPSAttributeSet::GetResilienceAttribute().GetNumericValue(GetAttributeSet());
+// 		SaveData->Vigour = UTPSAttributeSet::GetVigourAttribute().GetNumericValue(GetAttributeSet());
+//
+// 		SaveData->bFirstTimeLoadIn = false;
+//
+// 		if (!HasAuthority()) return;
+// 		
+// 		UTPSAbilitySystemComponent* TPSASC = Cast<UTPSAbilitySystemComponent>(AbilitySystemComponent);
+// 		FForEachAbility SaveAbilityDelegate;
+// 		SaveData->SavedAbilities.Empty();
+// 		SaveAbilityDelegate.BindLambda([this, TPSASC, SaveData](const FGameplayAbilitySpec& AbilitySpec)
+// 		{
+// 			const FGameplayTag AbilityTag = TPSASC->GetAbilityTagFromSpec(AbilitySpec);
+// 			UAbilityInfo* AbilityInfo = UTPSAbilitySystemLibrary::GetAbilityInfo(this);
+// 			FTPSAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
+// 			
+// 			FSavedAbility SavedAbility;
+// 			SavedAbility.GameplayAbility = Info.Ability;
+// 			SavedAbility.AbilityLevel = AbilitySpec.Level;
+// 			SavedAbility.AbilitySlot = TPSASC->GetSlotFromAbilityTag(AbilityTag);
+// 			SavedAbility.AbilityStatus = TPSASC->GetStatusFromAbilityTag(AbilityTag);
+// 			SavedAbility.AbilityTag = AbilityTag;
+// 			SavedAbility.AbilityType = Info.AbilityType;
+//
+// 			SaveData->SavedAbilities.AddUnique(SavedAbility);
+// 		});
+// 		TPSASC->ForEachAbility(SaveAbilityDelegate);		
+// 		TPSGameMode->SaveInGameProgressData(SaveData);
+// 	}
+// }
 
 void ATPSPlayerCharacter::InitAbilityActorInfo()
 {

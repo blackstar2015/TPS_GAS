@@ -20,8 +20,14 @@ class TPSGAS_API ATPSPlayerController : public APlayerController
 	
 public:
 	ATPSPlayerController();
-	virtual void Tick(float DeltaTime) override;
+	virtual void PlayerTick(float DeltaTime) override;
+	UFUNCTION(Client,Reliable)
+	void ShowDamageNumber(float Damage, ACharacter* TargetCharacter, bool bBlockedHit, bool bCriticalHit);
 
+	UFUNCTION(BlueprintCallable)
+	void ShowMagicCircle(UMaterialInterface* DecalMaterial = nullptr);
+	UFUNCTION(BlueprintCallable)
+	void HideMagicCircle();
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<AActor> CurrentTarget = nullptr;
 protected:
@@ -53,4 +59,10 @@ private:
 
 	TScriptInterface<IEnemyInterface> LastActor;
 	TScriptInterface<IEnemyInterface> ThisActor;
+	
+	// UPROPERTY(EditDefaultsOnly)
+	// TSubclassOf<AMagicCircle> MagicCircleClass;
+	//
+	// UPROPERTY()
+	// TObjectPtr<AMagicCircle> MagicCircle;
 };

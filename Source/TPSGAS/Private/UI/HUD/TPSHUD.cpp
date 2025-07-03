@@ -4,6 +4,8 @@
 #include "UI/HUD/TPSHUD.h"
 
 #include "Blueprint/UserWidget.h"
+#include "UI/WidgetControllers/AttributeMenuWidgetController.h"
+#include "UI/WidgetControllers/SpellMenuWidgetController.h"
 #include "UI/WidgetControllers/TPSOverlayWidgetController.h"
 #include "UI/Widgets/TPSUserWidget.h"
 
@@ -17,28 +19,28 @@ UTPSOverlayWidgetController* ATPSHUD::GetOverlayWidgetController(const FWidgetCo
 	}
 	return OverlayWidgetController;
 }
-//
-// UAttributeMenuWidgetController* ATPSHUD::GetAttributeMenuWidgetController(const FWidgetControllerParams& WCParams)
-// {
-// 	if(AttributeMenuWidgetController == nullptr)
-// 	{
-// 		AttributeMenuWidgetController = NewObject<UAttributeMenuWidgetController>(this, AttributeMenuWidgetControllerClass);
-// 		AttributeMenuWidgetController->SetWidgetControllerParams(WCParams); 
-// 		AttributeMenuWidgetController->BindCallbacksToDependencies();
-// 	}
-// 	return AttributeMenuWidgetController;
-// }
-//
-// USpellMenuWidgetController* ATPSHUD::GetSpellMenuWidgetController(const FWidgetControllerParams& WCParams)
-// {
-// 	if(SpellMenuWidgetController == nullptr)
-// 	{
-// 		SpellMenuWidgetController = NewObject<USpellMenuWidgetController>(this, SpellMenuWidgetControllerClass);
-// 		SpellMenuWidgetController->SetWidgetControllerParams(WCParams);
-// 		SpellMenuWidgetController->BindCallbacksToDependencies();
-// 	}
-// 	return SpellMenuWidgetController;
-// }
+
+UAttributeMenuWidgetController* ATPSHUD::GetAttributeMenuWidgetController(const FWidgetControllerParams& WCParams)
+{
+	if(AttributeMenuWidgetController == nullptr)
+	{
+		AttributeMenuWidgetController = NewObject<UAttributeMenuWidgetController>(this, AttributeMenuWidgetControllerClass);
+		AttributeMenuWidgetController->SetWidgetControllerParams(WCParams); 
+		AttributeMenuWidgetController->BindCallbacksToDependencies();
+	}
+	return AttributeMenuWidgetController;
+}
+
+USpellMenuWidgetController* ATPSHUD::GetSpellMenuWidgetController(const FWidgetControllerParams& WCParams)
+{
+	if(SpellMenuWidgetController == nullptr)
+	{
+		SpellMenuWidgetController = NewObject<USpellMenuWidgetController>(this, SpellMenuWidgetControllerClass);
+		SpellMenuWidgetController->SetWidgetControllerParams(WCParams);
+		SpellMenuWidgetController->BindCallbacksToDependencies();
+	}
+	return SpellMenuWidgetController;
+}
 
 void ATPSHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS)
 {
