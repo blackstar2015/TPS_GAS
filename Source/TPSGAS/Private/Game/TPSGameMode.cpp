@@ -3,3 +3,14 @@
 
 #include "Game/TPSGameMode.h"
 
+void ATPSGameMode::PlayerDied(ACharacter* DeadCharacter)
+{
+	
+}
+
+void ATPSGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+	Maps.Add(DefaultMapName, DefaultMap);
+
+}
