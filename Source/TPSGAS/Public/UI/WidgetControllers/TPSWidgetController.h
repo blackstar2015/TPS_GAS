@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 #include "TPSWidgetController.generated.h"
 
 
@@ -16,7 +17,7 @@ class UAbilitySystemComponent;
 class UAbilityInfo;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChangeSignature, int32, NewValue);
-//DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityInfoSignature, const FTPSAbilityInfo&, Info);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityInfoSignature, const FTPSAbilityInfo&, Info);
 
 
 USTRUCT(BlueprintType)
@@ -53,8 +54,8 @@ public:
 	virtual void BroadCastInitialValues();
 	virtual void BindCallbacksToDependencies();
 
-	// UPROPERTY(BlueprintAssignable, Category="GAS|Messages")
-	// FAbilityInfoSignature AbilityInfoDelegate;
+	UPROPERTY(BlueprintAssignable, Category="GAS|Messages")
+	FAbilityInfoSignature AbilityInfoDelegate;
 
 	void BroadcastAbilityInfo();
 	
@@ -83,11 +84,11 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
 	TObjectPtr<UTPSAttributeSet> TPSAttributeSet;
 	
-	// UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Widget Data")
-	// TObjectPtr<UAbilityInfo> AbilityInfo;
-	//
-	// UPROPERTY(EditDefaultsOnly)
-	// TObjectPtr<UAttributeInfo> AttributeInfo;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Widget Data")
+	TObjectPtr<UAbilityInfo> AbilityInfo;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UAttributeInfo> AttributeInfo;
 	
 	ATPSPlayerController* GetTPSPlayerController();
 	ATPSPlayerState* GetTPSPlayerState();

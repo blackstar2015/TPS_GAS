@@ -10,7 +10,7 @@
 class UGameplayAbility;
 
 USTRUCT(BlueprintType)
-struct FAuraAbilityInfo
+struct FTPSAbilityInfo
 {
 	GENERATED_BODY()
 	
@@ -52,7 +52,7 @@ class TPSGAS_API UAbilityInfo : public UDataAsset
 
 public:	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AbilityInformation")
-	TArray<FAuraAbilityInfo> AbilityInformation;
+	TArray<FTPSAbilityInfo> AbilityInformation;
 
-	FAuraAbilityInfo FindAbilityInfoForTag(const FGameplayTag& AbilityTag, bool bLogNotFound = false) const;
+	FTPSAbilityInfo FindAbilityInfoForTag(const FGameplayTag& AbilityTag, bool bLogNotFound = false) const;
 };
