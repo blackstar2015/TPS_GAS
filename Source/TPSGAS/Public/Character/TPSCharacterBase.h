@@ -161,6 +161,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Combat|Montages")
 	TObjectPtr<UAnimMontage> HitReactMontage;
 	
+	//TODO: Handle Passive Abilities
 	// UPROPERTY(VisibleAnywhere)
 	// TObjectPtr<UPassiveNiagaraComponent> HaloOfProtectionNiagaraComponent;
 	//

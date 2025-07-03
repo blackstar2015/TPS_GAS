@@ -174,8 +174,11 @@ void ATPSCharacterBase::MulticastHandleDeath_Implementation(const FVector& Death
 	Dissolve();
 	DissolveWeapon();
 	bDead = true;
+	
+	//TODO: Handle Debuff components
 	//BurnDebuffComponent->Deactivate();
 	//StunDebuffComponent->Deactivate();
+	
 	OnDeathDelegate.Broadcast(this);
 }
 

@@ -34,11 +34,11 @@ public:
 	UFUNCTION(BlueprintPure,Category="TPSAbilitySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
 	static UTPSOverlayWidgetController* GetOverlayWidgetController(const UObject* WorldContextObject);
 	
-	// UFUNCTION(BlueprintPure,Category="TPSAbilitySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
-	// static UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const UObject* WorldContextObject);
-	//
-	// UFUNCTION(BlueprintPure,Category="TPSAbilitySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
-	// static USpellMenuWidgetController* GetSpellMenuWidgetController(const UObject* WorldContextObject);	
+	UFUNCTION(BlueprintPure,Category="TPSAbilitySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
+	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const UObject* WorldContextObject);
+	
+	UFUNCTION(BlueprintPure,Category="TPSAbilitySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
+	static USpellMenuWidgetController* GetSpellMenuWidgetController(const UObject* WorldContextObject);	
 #pragma endregion
 
 #pragma region Ability System Class Defaults
@@ -57,6 +57,7 @@ public:
 	UFUNCTION(BlueprintCallable,Category="TPSAbilitySystemLibrary|CharacterClassDefaults")
 	static UAbilityInfo* GetAbilityInfo(const UObject* WorldContextObject);
 
+	//TODO: Handle Loot Tiers
 	// UFUNCTION(BlueprintCallable,Category="TPSAbilitySystemLibrary|CharacterClassDefaults", meta = (DefaultToSelf = "WorldContextObject"))
 	// static ULootTiers* GetLootTiers(const UObject* WorldContextObject);
 #pragma endregion

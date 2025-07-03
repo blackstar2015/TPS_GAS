@@ -40,7 +40,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TMap<FString, TSoftObjectPtr<UWorld>> Maps;
-	
+	//TODO: Implement saving progress
 	// void SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex);
 	// void TravelToMap(UMVVM_LoadSlot* LoadSlot);
 	// void SaveInGameProgressData(ULoadScreenSaveGame* SaveObject);

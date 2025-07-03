@@ -7,8 +7,9 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "Character/TPSPlayerCharacter.h"
+#include "Components/DecalComponent.h"
 #include "Interaction/EnemyInterface.h"
-
+#include "UI/Widgets/DamageTextComponent.h"
 class UEnhancedInputLocalPlayerSubsystem;
 
 ATPSPlayerController::ATPSPlayerController()
@@ -24,35 +25,35 @@ void ATPSPlayerController::PlayerTick(float DeltaTime)
 
 void ATPSPlayerController::ShowMagicCircle(UMaterialInterface* DecalMaterial)
 {
-	// if(!IsValid(MagicCircle))
-	// {
-	// 	MagicCircle = GetWorld()->SpawnActor<AMagicCircle>(MagicCircleClass);
-	// 	if(DecalMaterial)
-	// 	{
-	// 		MagicCircle->MagicCircleDecal->SetMaterial(0,DecalMaterial);
-	// 	}
-	// }
+	if(!IsValid(MagicCircle))
+	{
+		MagicCircle = GetWorld()->SpawnActor<AMagicCircle>(MagicCircleClass);
+		if(DecalMaterial)
+		{
+			MagicCircle->MagicCircleDecal->SetMaterial(0,DecalMaterial);
+		}
+	}
 }
 
 void ATPSPlayerController::HideMagicCircle()
 {
-	// if(IsValid(MagicCircle))
-	// {
-	// 	MagicCircle->Destroy();
-	// }
+	if(IsValid(MagicCircle))
+	{
+		MagicCircle->Destroy();
+	}
 }
 
 void ATPSPlayerController::ShowDamageNumber_Implementation(float Damage, ACharacter* TargetCharacter, bool bBlockedHit,
                                                            bool bCriticalHit)
 {
-	// if (IsValid(TargetCharacter) && DamageTextComponentClass && IsLocalController())
-	// {
-	// 	UDamageTextComponent* DamageText = NewObject<UDamageTextComponent>(TargetCharacter,DamageTextComponentClass);
-	// 	DamageText->RegisterComponent();
-	// 	DamageText->AttachToComponent(TargetCharacter->GetRootComponent(),FAttachmentTransformRules::KeepRelativeTransform);
-	// 	DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);		
-	// 	DamageText->SetDamageText(DamageAmount,bBlockedHit,bCriticalHit);
-	// }
+	if (IsValid(TargetCharacter) && DamageTextComponentClass && IsLocalController())
+	{
+		UDamageTextComponent* DamageText = NewObject<UDamageTextComponent>(TargetCharacter,DamageTextComponentClass);
+		DamageText->RegisterComponent();
+		DamageText->AttachToComponent(TargetCharacter->GetRootComponent(),FAttachmentTransformRules::KeepRelativeTransform);
+		DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);		
+		DamageText->SetDamageText(Damage,bBlockedHit,bCriticalHit);
+	}
 }
 
 void ATPSPlayerController::BeginPlay()

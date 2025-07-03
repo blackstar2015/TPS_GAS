@@ -130,6 +130,124 @@ void UTPSAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMod
 	}
 }
 
+#pragma region PrimaryAttribute 
+void UTPSAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldStrength) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, Strength, OldStrength);
+}
+
+void UTPSAttributeSet::OnRep_Intelligence(const FGameplayAttributeData& OldIntelligence) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, Intelligence, OldIntelligence);
+}
+
+void UTPSAttributeSet::OnRep_Dexterity(const FGameplayAttributeData& OldDexterity) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, Dexterity, OldDexterity);
+}
+
+void UTPSAttributeSet::OnRep_Vigour(const FGameplayAttributeData& OldVigour) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, Vigour, OldVigour);
+}
+
+void UTPSAttributeSet::OnRep_Luck(const FGameplayAttributeData& OldLuck) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, Luck, OldLuck);
+}
+#pragma endregion
+
+#pragma region ResistanceAttribute
+void UTPSAttributeSet::OnRep_FireResistance(const FGameplayAttributeData& OldFireResistance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, FireResistance, OldFireResistance);
+}
+
+void UTPSAttributeSet::OnRep_LightningResistance(const FGameplayAttributeData& OldLightningResistance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, LightningResistance, OldLightningResistance);
+}
+
+void UTPSAttributeSet::OnRep_IceResistance(const FGameplayAttributeData& OldIceResistance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, IceResistance, OldIceResistance);
+}
+
+void UTPSAttributeSet::OnRep_ArcaneResistance(const FGameplayAttributeData& OldArcaneResistance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, ArcaneResistance, OldArcaneResistance);
+}
+
+void UTPSAttributeSet::OnRep_PhysicalResistance(const FGameplayAttributeData& OldPhysicalResistance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, PhysicalResistance, OldPhysicalResistance);
+}
+#pragma endregion
+
+#pragma region SecondaryAttribute
+void UTPSAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldArmor) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, Armor, OldArmor);
+}
+
+void UTPSAttributeSet::OnRep_ArmorPenetration(const FGameplayAttributeData& OldArmorPenetration) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, ArmorPenetration, OldArmorPenetration);
+}
+
+void UTPSAttributeSet::OnRep_BlockChance(const FGameplayAttributeData& OldBlockChance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, BlockChance, OldBlockChance);
+}
+
+void UTPSAttributeSet::OnRep_CritChance(const FGameplayAttributeData& OldCritChance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, CritChance, OldCritChance);
+}
+
+void UTPSAttributeSet::OnRep_CritDamage(const FGameplayAttributeData& OldCritDamage) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, CritDamage, OldCritDamage);
+}
+
+void UTPSAttributeSet::OnRep_CritResistance(const FGameplayAttributeData& OldCritResistance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, CritResistance, OldCritResistance);
+}
+
+void UTPSAttributeSet::OnRep_HealthRegen(const FGameplayAttributeData& OldHealthRegen) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, HealthRegen, OldHealthRegen);
+}
+
+void UTPSAttributeSet::OnRep_ManaRegen(const FGameplayAttributeData& OldManaRegen) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, ManaRegen, OldManaRegen);
+}
+
+void UTPSAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, MaxHealth, OldMaxHealth);
+}
+
+void UTPSAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, MaxMana, OldMaxMana);
+}
+#pragma endregion
+
+#pragma region VitalAttributes
+void UTPSAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, Health, OldHealth);
+}
+
+void UTPSAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, Mana, OldMana);
+}
+#pragma endregion
+
 void UTPSAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
 	Super::PostAttributeChange(Attribute, OldValue, NewValue);
@@ -143,93 +261,6 @@ void UTPSAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, 
 		SetMana(GetMaxMana());
 		bTopOffMana = false;
 	}
-}
-
-void UTPSAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldStrength) const
-{
-}
-
-void UTPSAttributeSet::OnRep_Intelligence(const FGameplayAttributeData& OldIntelligence) const
-{
-}
-
-void UTPSAttributeSet::OnRep_Dexterity(const FGameplayAttributeData& OldDexterity) const
-{
-}
-
-void UTPSAttributeSet::OnRep_Luck(const FGameplayAttributeData& OldLuck) const
-{
-}
-
-void UTPSAttributeSet::OnRep_Vigour(const FGameplayAttributeData& OldVigour) const
-{
-}
-
-void UTPSAttributeSet::OnRep_FireResistance(const FGameplayAttributeData& OldFireResistance) const
-{
-}
-
-void UTPSAttributeSet::OnRep_LightningResistance(const FGameplayAttributeData& OldLightningResistance) const
-{
-}
-
-void UTPSAttributeSet::OnRep_IceResistance(const FGameplayAttributeData& OldIceResistance) const
-{
-}
-
-void UTPSAttributeSet::OnRep_ArcaneResistance(const FGameplayAttributeData& OldArcaneResistance) const
-{
-}
-
-void UTPSAttributeSet::OnRep_PhysicalResistance(const FGameplayAttributeData& OldPhysicalResistance) const
-{
-}
-
-void UTPSAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldStrength) const
-{
-}
-
-void UTPSAttributeSet::OnRep_ArmorPenetration(const FGameplayAttributeData& OldArmorPenetration) const
-{
-}
-
-void UTPSAttributeSet::OnRep_BlockChance(const FGameplayAttributeData& OldBlockChance) const
-{
-}
-
-void UTPSAttributeSet::OnRep_CritChance(const FGameplayAttributeData& OldCritChance) const
-{
-}
-
-void UTPSAttributeSet::OnRep_CritDamage(const FGameplayAttributeData& OldCritDamage) const
-{
-}
-
-void UTPSAttributeSet::OnRep_CritResistance(const FGameplayAttributeData& OldCritResistance) const
-{
-}
-
-void UTPSAttributeSet::OnRep_HealthRegen(const FGameplayAttributeData& OldHealthRegen) const
-{
-}
-
-void UTPSAttributeSet::OnRep_ManaRegen(const FGameplayAttributeData& OldManaRegen) const
-{
-}
-
-void UTPSAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, Health, OldHealth);
-}
-
-void UTPSAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, MaxHealth, OldMaxHealth);
-}
-
-void UTPSAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, Mana, OldMana);
 }
 
 void UTPSAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
@@ -304,6 +335,39 @@ void UTPSAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 
 void UTPSAttributeSet::HandleIncomingXP(const FEffectProperties& Props)
 {
+	const float LocalIncomingXP = GetIncomingXP();
+	SetIncomingXP(0.f);
+
+	if (Props.SourceCharacter->Implements<UPlayerInterface>() && Props.SourceCharacter->Implements<UCombatInterface>())
+	{
+		const int32 CurrentLevel = ICombatInterface::Execute_GetPlayerLevel(Props.SourceCharacter);
+		const int32 CurrentXP = IPlayerInterface::Execute_GetXP(Props.SourceCharacter);
+
+		const int32 NewLevel = IPlayerInterface::Execute_FindLevelForXP(Props.SourceCharacter, CurrentXP + LocalIncomingXP);
+		const int32 NumLevelUps = NewLevel - CurrentLevel;
+		if (NumLevelUps > 0)
+		{
+			IPlayerInterface::Execute_AddToPlayerLevel(Props.SourceCharacter, NumLevelUps);
+			
+			int32 AttributePointsReward = 0;
+			int32 SpellPointsReward = 0;
+
+			for (int32 i = 0; i < NumLevelUps; i++)
+			{
+				AttributePointsReward += IPlayerInterface::Execute_GetAttributePointsReward(Props.SourceCharacter, CurrentLevel + i);
+				SpellPointsReward += IPlayerInterface::Execute_GetSpellPointsReward(Props.SourceCharacter, CurrentLevel + i	);
+			}
+			IPlayerInterface::Execute_AddToAttributePoints(Props.SourceCharacter, AttributePointsReward);
+			IPlayerInterface::Execute_AddToSpellPoints(Props.SourceCharacter, SpellPointsReward);
+
+			bTopOffHealth = true;
+			bTopOffMana = true;
+				
+			IPlayerInterface::Execute_LevelUp(Props.SourceCharacter);
+		}
+			
+		IPlayerInterface::Execute_AddToXP(Props.SourceCharacter, LocalIncomingXP);
+	}
 }
 
 void UTPSAttributeSet::Debuff(const FEffectProperties& Props)
@@ -410,17 +474,37 @@ void UTPSAttributeSet::ShowFloatingText(const FEffectProperties Props, float Dam
 
 void UTPSAttributeSet::SendXPEvent(const FEffectProperties& Props) const
 {
+	if (Props.TargetCharacter->Implements<UCombatInterface>())
+	{
+		const int32 TargetLevel = ICombatInterface::Execute_GetPlayerLevel(Props.TargetCharacter);
+		const ECharacterClass TargetClass = ICombatInterface::Execute_GetCharacterClass(Props.TargetCharacter);
+		const int32 XPReward = UTPSAbilitySystemLibrary::GetXPRewardForClassAndLevel(Props.TargetCharacter, TargetClass, TargetLevel);
+ 
+		const FTPSGameplayTags& GameplayTags = FTPSGameplayTags::Get();
+		FGameplayEventData Payload;
+		Payload.EventTag = GameplayTags.Attributes_Meta_IncomingXP;
+		Payload.EventMagnitude = XPReward;
+		
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, GameplayTags.Attributes_Meta_IncomingXP, Payload);
+	}
 }
 
 void UTPSAttributeSet::SendLifeSiphonEvent(const FEffectProperties& Props) const
 {
+	const FTPSGameplayTags& GameplayTags = FTPSGameplayTags::Get();
+	FGameplayEventData Payload;
+	int32 AbilityLevel = Props.EffectContextHandle.GetAbilityLevel();
+	Payload.EventTag = GameplayTags.Attributes_Vital_Health;
+	Payload.EventMagnitude = GetMaxHealth() * AbilityLevel/20;
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, GameplayTags.Attributes_Vital_Health, Payload);
 }
 
 void UTPSAttributeSet::SendManaSiphonEvent(const FEffectProperties& Props) const
 {
-}
-
-void UTPSAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UTPSAttributeSet, MaxMana, OldMaxMana);
+	const FTPSGameplayTags& GameplayTags = FTPSGameplayTags::Get();
+	FGameplayEventData Payload;
+	int32 AbilityLevel = Props.EffectContextHandle.GetAbilityLevel();
+	Payload.EventTag = GameplayTags.Attributes_Vital_Mana;
+	Payload.EventMagnitude = GetMaxMana() * AbilityLevel/20;
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, GameplayTags.Attributes_Vital_Mana, Payload);
 }

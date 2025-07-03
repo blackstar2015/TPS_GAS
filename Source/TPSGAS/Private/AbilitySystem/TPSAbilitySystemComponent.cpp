@@ -8,6 +8,7 @@
 //#include "AbilitySystem/Abilities/TPSGameplayAbility.h"
 // #include "TPSGAS/TPSLogChannels.h"
 // #include "Game/LoadScreenSaveGame.h"
+#include "AbilitySystem/Abilities/TPSGameplayAbility.h"
 #include "Interaction/PlayerInterface.h"
 
 void UTPSAbilitySystemComponent::AbilityActorInfoSet()
@@ -51,12 +52,12 @@ void UTPSAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<
 	for (const TSubclassOf<UGameplayAbility> AbilityClass : StartupAbilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass,1);
-		// if(const UTPSGameplayAbility* TPSAbility = Cast<UTPSGameplayAbility>(AbilitySpec.Ability))
-		// {
-		// 	AbilitySpec.GetDynamicSpecSourceTags().AddTag(TPSAbility->StartupInputTag);
-		// 	AbilitySpec.GetDynamicSpecSourceTags().AddTag(FTPSGameplayTags::Get().Abilities_Status_Equipped);
-		// 	GiveAbility(AbilitySpec);
-		// }
+		if(const UTPSGameplayAbility* TPSAbility = Cast<UTPSGameplayAbility>(AbilitySpec.Ability))
+		{
+			AbilitySpec.GetDynamicSpecSourceTags().AddTag(TPSAbility->StartupInputTag);
+			AbilitySpec.GetDynamicSpecSourceTags().AddTag(FTPSGameplayTags::Get().Abilities_Status_Equipped);
+			GiveAbility(AbilitySpec);
+		}
 	}
 	bStartupAbilitiesGiven = true;
 	AbilitiesGivenDelegate.Broadcast();
@@ -436,13 +437,13 @@ bool UTPSAbilitySystemComponent::GetDescriptionsByAbilityTag(const FGameplayTag&
 {
 	if (const FGameplayAbilitySpec* AbilitySpec = GetSpecFromAbilityTag(AbilityTag))
 	{
-		// if(UTPSGameplayAbility* TPSAbility = Cast<UTPSGameplayAbility>(AbilitySpec->Ability))
-		// {
-		// 	int32 Damage = AbilitySpec->Ability->GetAbilityLevel();
-		// 	OutDescription = TPSAbility->GetDescription(AbilitySpec->Level);
-		// 	OutNextLevelDescription = TPSAbility->GetNextLevelDescription(AbilitySpec->Level + 1);
-		// 	return true;
-		// }
+		if(UTPSGameplayAbility* TPSAbility = Cast<UTPSGameplayAbility>(AbilitySpec->Ability))
+		{
+			int32 Damage = AbilitySpec->Ability->GetAbilityLevel();
+			OutDescription = TPSAbility->GetDescription(AbilitySpec->Level);
+			OutNextLevelDescription = TPSAbility->GetNextLevelDescription(AbilitySpec->Level + 1);
+			return true;
+		}
 	}
 	const UAbilityInfo* AbilityInfo = UTPSAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
 	if(!AbilityTag.IsValid() || AbilityTag.MatchesTagExact(FTPSGameplayTags::Get().Abilities_None))
@@ -451,7 +452,7 @@ bool UTPSAbilitySystemComponent::GetDescriptionsByAbilityTag(const FGameplayTag&
 	}
 	else
 	{
-		//OutDescription = UTPSGameplayAbility::GetLockedDescription(AbilityInfo->FindAbilityInfoForTag(AbilityTag).LevelRequirement);
+		OutDescription = UTPSGameplayAbility::GetLockedDescription(AbilityInfo->FindAbilityInfoForTag(AbilityTag).LevelRequirement);
 	}
 	OutNextLevelDescription = FString();
 	return false;

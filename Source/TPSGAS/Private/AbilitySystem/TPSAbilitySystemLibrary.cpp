@@ -48,8 +48,33 @@ UTPSOverlayWidgetController* UTPSAbilitySystemLibrary::GetOverlayWidgetControlle
 	return nullptr;
 }
 
+UAttributeMenuWidgetController* UTPSAbilitySystemLibrary::GetAttributeMenuWidgetController(
+	const UObject* WorldContextObject)
+{
+	FWidgetControllerParams WCParams;
+	ATPSHUD* TPSHUD = nullptr;
+	
+	if(MakeWidgetControllerParams(WorldContextObject, WCParams, TPSHUD))
+	{
+		return TPSHUD->GetAttributeMenuWidgetController(WCParams);		
+	}	
+	return nullptr;	
+}
+
+USpellMenuWidgetController* UTPSAbilitySystemLibrary::GetSpellMenuWidgetController(const UObject* WorldContextObject)
+{
+	FWidgetControllerParams WCParams;
+	ATPSHUD* TPSHUD = nullptr;
+	
+	if(MakeWidgetControllerParams(WorldContextObject, WCParams, TPSHUD))
+	{
+		return TPSHUD->GetSpellMenuWidgetController(WCParams);		
+	}	
+	return nullptr;	
+}
+
 void UTPSAbilitySystemLibrary::InitializeDefaultAttributes(ECharacterClass CharacterClass, float Level,
-	const UObject* WorldContextObject, UAbilitySystemComponent* ASC)
+                                                           const UObject* WorldContextObject, UAbilitySystemComponent* ASC)
 {
 	AActor* AvatarActor = ASC->GetAvatarActor();
 
@@ -407,10 +432,10 @@ void UTPSAbilitySystemLibrary::GetLivePlayersWithinRadius(const UObject* WorldCo
 
 		for (FOverlapResult& Overlap : Overlaps)
 		{
-			// if (Overlap.GetActor()->Implements<UCombatInterface>() && !ICombatInterface::Execute_IsDead(Overlap.GetActor()))
-			// {
-			// 	OutOverlappingActors.AddUnique(Overlap.GetActor());
-			// }
+			if (Overlap.GetActor()->Implements<UCombatInterface>() && !ICombatInterface::Execute_IsDead(Overlap.GetActor()))
+			{
+				OutOverlappingActors.AddUnique(Overlap.GetActor());
+			}
 		}
 	}
 }
