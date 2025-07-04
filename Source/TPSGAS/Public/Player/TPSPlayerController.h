@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystem/TPSAbilitySystemComponent.h"
 #include "Actors/MagicCircle.h"
 #include "GameFramework/PlayerController.h"
 #include "Interaction/EnemyInterface.h"
@@ -12,6 +13,15 @@
 struct FInputActionValue;
 class UInputAction;
 class UInputMappingContext;
+class UTPSInputConfig;
+
+enum class ETargetingStatus  : uint8
+{
+	TargetingEnemy,
+	TargetingNonEnemy,
+	NotTargeting
+};
+
 /**
  * 
  */
@@ -51,6 +61,14 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UTPSInputConfig> InputConfig;
+	UPROPERTY()
+	TObjectPtr<UTPSAbilitySystemComponent> TPSAbilitySystemComponent;
+	void AbilityInputTagPressed(FGameplayTag InputTag);
+	void AbilityInputTagReleased(FGameplayTag InputTag);
+	void AbilityInputTagHeld(FGameplayTag InputTag);
+	
 	UPROPERTY(EditAnywhere)
 	float TraceRadius = 50.f;
 
@@ -60,6 +78,8 @@ private:
 	void StopJumping(const FInputActionValue& InputActionValue);
 
 	void CameraTrace();
+	ETargetingStatus TargetingStatus = ETargetingStatus::NotTargeting;
+	UTPSAbilitySystemComponent* GetASC();
 
 	TScriptInterface<IEnemyInterface> LastActor;
 	TScriptInterface<IEnemyInterface> ThisActor;

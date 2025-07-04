@@ -3,14 +3,17 @@
 
 #include "Player/TPSPlayerController.h"
 
-#include "EnhancedInputComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "TPSGameplayTags.h"
 #include "Character/TPSPlayerCharacter.h"
 #include "Components/DecalComponent.h"
+#include "Input/TPSInputComponent.h"
 #include "Interaction/EnemyInterface.h"
 #include "UI/Widgets/DamageTextComponent.h"
 class UEnhancedInputLocalPlayerSubsystem;
+
 
 ATPSPlayerController::ATPSPlayerController()
 {
@@ -75,17 +78,123 @@ void ATPSPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
+	UTPSInputComponent* TPSInputComponent = CastChecked<UTPSInputComponent>(InputComponent);
 	
 	// Jumping
-	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ATPSPlayerController::Jump);
-	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ATPSPlayerController::StopJumping);
+	TPSInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ATPSPlayerController::Jump);
+	TPSInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ATPSPlayerController::StopJumping);
 
 	// Moving
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATPSPlayerController::Move);
+	TPSInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATPSPlayerController::Move);
 
 	// Looking
-	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATPSPlayerController::Look);
+	TPSInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATPSPlayerController::Look);
+
+	TPSInputComponent->BindAbilityActions(InputConfig,this,
+		&ThisClass::AbilityInputTagPressed,&ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
+}
+
+void ATPSPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
+{
+	// if (GetASC() && GetASC()->HasMatchingGameplayTag(FTPSGameplayTags::Get().Player_Block_InputPressed))
+	// {
+	// 	return;
+	// }
+	// if (InputTag.MatchesTagExact(FTPSGameplayTags::Get().InputTag_LMB))
+	// {
+	// 	if (IsValid(ThisActor.GetObject()))
+	// 	{
+	// 		TargetingStatus = ThisActor.GetObject()->Implements<UEnemyInterface>() ? ETargetingStatus::TargetingEnemy : ETargetingStatus::TargetingNonEnemy;
+	// 	}
+	// 	else
+	// 	{
+	// 		TargetingStatus = ETargetingStatus::NotTargeting;
+	// 	}
+	// 	//bAutoRunning = false;			
+	// }	
+	// if (GetASC()) GetASC()->AbilityInputTagPressed(InputTag);
+	GEngine->AddOnScreenDebugMessage(1,3.f,FColor::Red,*InputTag.ToString());
+}
+
+void ATPSPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+	// if (GetASC() && GetASC()->HasMatchingGameplayTag(FTPSGameplayTags::Get().Player_Block_InputReleased))
+	// {
+	// 	return;
+	// }
+	// if (!InputTag.MatchesTagExact(FTPSGameplayTags::Get().InputTag_LMB))
+	// {
+	// 	if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
+	// 	return;
+	// }
+	//
+	// if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
+
+	GEngine->AddOnScreenDebugMessage(2,3.f,FColor::Blue,*InputTag.ToString());
+
+#pragma region AutoRunning in Top Down System(DEPRECATED)
+	// if (TargetingStatus != ETargetingStatus::TargetingEnemy && !bShiftKeyDown)
+	// {
+	// 	const APawn* ControlledPawn = GetPawn();
+	// 	if (FollowTime <= ShortPressThreshold && ControlledPawn)
+	// 	{
+	// 		if (IsValid(ThisActor) && ThisActor->Implements<UHighlightInterface>())
+	// 		{
+	// 			IHighlightInterface::Execute_SetMoveToLocation(ThisActor,CachedDestination);
+	// 		}
+	// 		else if (GetASC() && !GetASC()->HasMatchingGameplayTag(FTPSGameplayTags::Get().Player_Block_InputPressed))
+	// 		{
+	// 			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CachedDestination);
+	// 		}
+	// 		
+	// 		if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination))
+	// 		{
+	// 			Spline->ClearSplinePoints();
+	// 			for (const FVector& PointLoc : NavPath->PathPoints)
+	// 			{
+	// 				Spline->AddSplinePoint(PointLoc, ESplineCoordinateSpace::World);
+	// 			}
+	// 			if (NavPath->PathPoints.Num() > 0)
+	// 			{
+	// 				CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
+	// 				bAutoRunning = true;
+	// 			}
+	// 		}			
+	// 	}
+	// 	FollowTime = 0.f;
+	// 	TargetingStatus = ETargetingStatus::NotTargeting;
+	// }
+#pragma endregion
+}
+
+void ATPSPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
+{
+	// if (GetASC() && GetASC()->HasMatchingGameplayTag(FTPSGameplayTags::Get().Player_Block_InputHeld))
+	// {
+	// 	return;
+	// }
+	//
+	// 	if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
+	//
+	// if (TargetingStatus == ETargetingStatus::TargetingEnemy)
+	// {
+	// 	if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
+	// }
+	GEngine->AddOnScreenDebugMessage(3,3.f,FColor::Green,*InputTag.ToString());
+
+#pragma region AutoRunning in Top Down System(DEPRECATED)
+	// else
+	// {
+	// 	FollowTime += GetWorld()->GetDeltaSeconds();
+	// 	if (CursorHit.bBlockingHit) CachedDestination = CursorHit.ImpactPoint;
+	//
+	// 	if (APawn* ControlledPawn = GetPawn())
+	// 	{
+	// 		const FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
+	// 		ControlledPawn->AddMovementInput(WorldDirection);
+	// 	}
+	// }
+#pragma endregion
 }
 
 void ATPSPlayerController::Move(const FInputActionValue& InputActionValue)
@@ -204,4 +313,14 @@ void ATPSPlayerController::CameraTrace()
 	{
 		//DrawDebugLine(GetWorld(), WorldLocation, TraceEnd, FColor::Red, false, .1f, 0, 1.0f);
 	}
+}
+
+UTPSAbilitySystemComponent* ATPSPlayerController::GetASC()
+{
+	if(TPSAbilitySystemComponent == nullptr)
+	{
+		TPSAbilitySystemComponent = Cast<UTPSAbilitySystemComponent>
+		(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+	}
+	return TPSAbilitySystemComponent;
 }

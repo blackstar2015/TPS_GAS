@@ -62,6 +62,7 @@ void ATPSPlayerCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 	InitAbilityActorInfo();
+	AddCharacterAbilities();
 }
 
 void ATPSPlayerCharacter::OnRep_PlayerState()
