@@ -82,7 +82,8 @@ void UTPSAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inpu
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
 		FTPSGameplayTags TagContainer = FTPSGameplayTags::Get();
-		if (HasMatchingGameplayTag(TagContainer.Abilities_WaitingExecution))
+		bool hasTag = HasMatchingGameplayTag(TagContainer.Abilities_WaitingExecution);
+		if (hasTag)
 		{
 			//if ability is waiting for another input to activate the spell check for LMB
 			if (AbilitySpec.Ability->GetAssetTags().HasTagExact(TagContainer.Abilities_WaitingExecution) && AbilitySpec.IsActive())
@@ -100,21 +101,21 @@ void UTPSAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inpu
 					}
 				}
 			}
-			else
+		}
+		else
+		{
+			if (AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InputTag))
 			{
-				if (AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InputTag))
+				AbilitySpecInputPressed(AbilitySpec);
+				if (!AbilitySpec.IsActive())
 				{
-					AbilitySpecInputPressed(AbilitySpec);
-					if (!AbilitySpec.IsActive())
+					TArray<UGameplayAbility*> AbilityInstances = AbilitySpec.GetAbilityInstances();
+					for (UGameplayAbility* AbilityInstance : AbilityInstances)
 					{
-						TArray<UGameplayAbility*> AbilityInstances = AbilitySpec.GetAbilityInstances();
-						for (UGameplayAbility* AbilityInstance : AbilityInstances)
-						{
-							InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed,
-								AbilitySpec.Handle,
-								AbilityInstance->GetCurrentActivationInfo().GetActivationPredictionKey());
-							return;
-						}
+						InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed,
+							AbilitySpec.Handle,
+							AbilityInstance->GetCurrentActivationInfo().GetActivationPredictionKey());
+						return;
 					}
 				}
 			}

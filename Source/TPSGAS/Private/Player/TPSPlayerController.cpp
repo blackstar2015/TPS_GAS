@@ -59,6 +59,11 @@ void ATPSPlayerController::ShowDamageNumber_Implementation(float Damage, ACharac
 	}
 }
 
+AActor* ATPSPlayerController::GetCurrentTarget()
+{
+	return CurrentTarget;
+}
+
 void ATPSPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -96,39 +101,39 @@ void ATPSPlayerController::SetupInputComponent()
 
 void ATPSPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
-	// if (GetASC() && GetASC()->HasMatchingGameplayTag(FTPSGameplayTags::Get().Player_Block_InputPressed))
-	// {
-	// 	return;
-	// }
-	// if (InputTag.MatchesTagExact(FTPSGameplayTags::Get().InputTag_LMB))
-	// {
-	// 	if (IsValid(ThisActor.GetObject()))
-	// 	{
-	// 		TargetingStatus = ThisActor.GetObject()->Implements<UEnemyInterface>() ? ETargetingStatus::TargetingEnemy : ETargetingStatus::TargetingNonEnemy;
-	// 	}
-	// 	else
-	// 	{
-	// 		TargetingStatus = ETargetingStatus::NotTargeting;
-	// 	}
-	// 	//bAutoRunning = false;			
-	// }	
-	// if (GetASC()) GetASC()->AbilityInputTagPressed(InputTag);
+	if (GetASC() && GetASC()->HasMatchingGameplayTag(FTPSGameplayTags::Get().Player_Block_InputPressed))
+	{
+		return;
+	}
+	if (InputTag.MatchesTagExact(FTPSGameplayTags::Get().InputTag_LMB))
+	{
+		if (IsValid(ThisActor.GetObject()))
+		{
+			TargetingStatus = ThisActor.GetObject()->Implements<UEnemyInterface>() ? ETargetingStatus::TargetingEnemy : ETargetingStatus::TargetingNonEnemy;
+		}
+		else
+		{
+			TargetingStatus = ETargetingStatus::NotTargeting;
+		}
+		//bAutoRunning = false;			
+	}	
+	if (GetASC()) GetASC()->AbilityInputTagPressed(InputTag);
 	GEngine->AddOnScreenDebugMessage(1,3.f,FColor::Red,*InputTag.ToString());
 }
 
 void ATPSPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
-	// if (GetASC() && GetASC()->HasMatchingGameplayTag(FTPSGameplayTags::Get().Player_Block_InputReleased))
-	// {
-	// 	return;
-	// }
-	// if (!InputTag.MatchesTagExact(FTPSGameplayTags::Get().InputTag_LMB))
-	// {
-	// 	if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
-	// 	return;
-	// }
-	//
-	// if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
+	if (GetASC() && GetASC()->HasMatchingGameplayTag(FTPSGameplayTags::Get().Player_Block_InputReleased))
+	{
+		return;
+	}
+	if (!InputTag.MatchesTagExact(FTPSGameplayTags::Get().InputTag_LMB))
+	{
+		if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
+		return;
+	}
+	
+	if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
 
 	GEngine->AddOnScreenDebugMessage(2,3.f,FColor::Blue,*InputTag.ToString());
 
@@ -169,17 +174,17 @@ void ATPSPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 
 void ATPSPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
-	// if (GetASC() && GetASC()->HasMatchingGameplayTag(FTPSGameplayTags::Get().Player_Block_InputHeld))
-	// {
-	// 	return;
-	// }
-	//
-	// 	if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
-	//
-	// if (TargetingStatus == ETargetingStatus::TargetingEnemy)
-	// {
-	// 	if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
-	// }
+	if (GetASC() && GetASC()->HasMatchingGameplayTag(FTPSGameplayTags::Get().Player_Block_InputHeld))
+	{
+		return;
+	}
+	
+		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
+	
+	if (TargetingStatus == ETargetingStatus::TargetingEnemy)
+	{
+		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
+	}
 	GEngine->AddOnScreenDebugMessage(3,3.f,FColor::Green,*InputTag.ToString());
 
 #pragma region AutoRunning in Top Down System(DEPRECATED)

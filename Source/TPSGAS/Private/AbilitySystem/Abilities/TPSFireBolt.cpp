@@ -87,7 +87,13 @@ void UTPSFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, con
 	for (const FRotator& Rotator : Rotations)
 	{
 		float HomingAccelerationMag = FMath::FRandRange(HomingAccelerationMin, HomingAccelerationMax);
-		FVector TargetLocation = HomingTarget->GetActorLocation();
+		FVector TargetLocation;
+		if (HomingTarget) TargetLocation = HomingTarget->GetActorLocation();
+		else
+		{
+			TargetLocation = GetAvatarActorFromActorInfo()->GetActorLocation().ForwardVector * 100.f;
+			DrawDebugSphere(GetWorld(), TargetLocation, 10.0f, 30, FColor::Yellow);
+		}
 		const float DistanceToTarget = FVector::Dist(SocketLocation, TargetLocation);
 		PitchOverride = UTPSAbilitySystemLibrary::CalculateLaunchAngleDegrees(DistanceToTarget, HomingAccelerationMag);
 		if (bOverridePitch) Rotation.Pitch = PitchOverride;

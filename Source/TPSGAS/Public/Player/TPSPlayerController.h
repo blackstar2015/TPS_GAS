@@ -42,6 +42,9 @@ public:
 	void HideMagicCircle();
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<AActor> CurrentTarget = nullptr;
+
+	UFUNCTION(BlueprintCallable)
+	AActor* GetCurrentTarget();
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
