@@ -30,19 +30,19 @@ void UTPSWidgetController::BindCallbacksToDependencies()
 
  void UTPSWidgetController::BroadcastAbilityInfo()
 	{
-		// if (!GetTPSASC()->bStartupAbilitiesGiven) return;
-		//
-		// FForEachAbility BroadcastDelegate;
-		// BroadcastDelegate.BindLambda(
-		// 	[this](const FGameplayAbilitySpec& AbilitySpec)
-		// 	{
-		// 		FTPSAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(
-		// 			TPSAbilitySystemComponent->GetAbilityTagFromSpec(AbilitySpec));
-		// 		Info.StatusTag = TPSAbilitySystemComponent->GetStatusFromSpec(AbilitySpec);
-		// 		Info.InputTag = TPSAbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
-		// 		AbilityInfoDelegate.Broadcast(Info);
-		// 	});
-		// GetTPSASC()->ForEachAbility(BroadcastDelegate);
+		if (!GetTPSASC()->bStartupAbilitiesGiven) return;
+		
+		FForEachAbility BroadcastDelegate;
+		BroadcastDelegate.BindLambda(
+			[this](const FGameplayAbilitySpec& AbilitySpec)
+			{
+				FTPSAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(
+					TPSAbilitySystemComponent->GetAbilityTagFromSpec(AbilitySpec));
+				Info.StatusTag = TPSAbilitySystemComponent->GetStatusFromSpec(AbilitySpec);
+				Info.InputTag = TPSAbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
+				AbilityInfoDelegate.Broadcast(Info);
+			});
+		GetTPSASC()->ForEachAbility(BroadcastDelegate);
 	}
 
 ATPSPlayerController* UTPSWidgetController::GetTPSPlayerController()
