@@ -118,7 +118,6 @@ void ATPSPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 		//bAutoRunning = false;			
 	}	
 	if (GetASC()) GetASC()->AbilityInputTagPressed(InputTag);
-	GEngine->AddOnScreenDebugMessage(1,3.f,FColor::Red,*InputTag.ToString());
 }
 
 void ATPSPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
@@ -135,7 +134,6 @@ void ATPSPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 	
 	if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
 
-	GEngine->AddOnScreenDebugMessage(2,3.f,FColor::Blue,*InputTag.ToString());
 
 #pragma region AutoRunning in Top Down System(DEPRECATED)
 	// if (TargetingStatus != ETargetingStatus::TargetingEnemy && !bShiftKeyDown)
@@ -185,7 +183,6 @@ void ATPSPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 	{
 		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 	}
-	GEngine->AddOnScreenDebugMessage(3,3.f,FColor::Green,*InputTag.ToString());
 
 #pragma region AutoRunning in Top Down System(DEPRECATED)
 	// else
