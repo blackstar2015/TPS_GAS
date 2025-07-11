@@ -42,9 +42,13 @@ public:
 	void HideMagicCircle();
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<AActor> CurrentTarget = nullptr;
-
+	UPROPERTY(EditDefaultsOnly)
+	float InterpSpeed = 5.f;
 	UFUNCTION(BlueprintCallable)
 	AActor* GetCurrentTarget();
+
+	UFUNCTION(BlueprintCallable)
+	void LockOn(float deltaTime);
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -64,10 +68,18 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* LockAction;
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UTPSInputConfig> InputConfig;
+	
 	UPROPERTY()
 	TObjectPtr<UTPSAbilitySystemComponent> TPSAbilitySystemComponent;
+	
+	UPROPERTY(VisibleAnywhere)
+	bool bIsLockedOn;
+	
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
 	void AbilityInputTagHeld(FGameplayTag InputTag);
@@ -77,6 +89,7 @@ private:
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+	void Lock(const FInputActionValue& Value);
 	void Jump(const FInputActionValue& InputActionValue);
 	void StopJumping(const FInputActionValue& InputActionValue);
 

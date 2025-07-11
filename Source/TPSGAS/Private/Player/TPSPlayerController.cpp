@@ -24,6 +24,7 @@ void ATPSPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
 	CameraTrace();
+	LockOn(DeltaTime);
 }
 
 void ATPSPlayerController::ShowMagicCircle(UMaterialInterface* DecalMaterial)
@@ -64,6 +65,19 @@ AActor* ATPSPlayerController::GetCurrentTarget()
 	return CurrentTarget;
 }
 
+void ATPSPlayerController::LockOn(float deltaTime)
+{
+	if (IsValid(CurrentTarget) && bIsLockedOn)
+	{
+		FVector ToTarget = CurrentTarget->GetActorLocation() - GetPawn()->GetActorLocation();
+		FRotator TargetRot = FRotationMatrix::MakeFromX(ToTarget).Rotator();
+		FRotator CurrentRot = GetPawn()->GetActorRotation();
+		FRotator NewRot = FMath:: RInterpTo(CurrentRot,TargetRot, deltaTime, InterpSpeed);
+
+		GetPawn()->SetActorRotation(NewRot);
+	}
+}
+
 void ATPSPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -94,6 +108,9 @@ void ATPSPlayerController::SetupInputComponent()
 
 	// Looking
 	TPSInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATPSPlayerController::Look);
+	
+	//Locking
+	TPSInputComponent->BindAction(LockAction, ETriggerEvent::Triggered, this, &ATPSPlayerController::Lock);
 
 	TPSInputComponent->BindAbilityActions(InputConfig,this,
 		&ThisClass::AbilityInputTagPressed,&ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
@@ -223,6 +240,28 @@ void ATPSPlayerController::Look(const FInputActionValue& Value)
 		// add yaw and pitch input to controller
 		ControlledPawn->AddControllerYawInput(LookAxisVector.X);
 		ControlledPawn->AddControllerPitchInput(LookAxisVector.Y);
+	}
+}
+
+void ATPSPlayerController::Lock(const FInputActionValue& Value)
+{
+	if (bIsLockedOn && IsValid(CurrentTarget))
+	{
+		// Turn off lock-on
+		bIsLockedOn = false;
+		CurrentTarget = nullptr;
+		ThisActor = nullptr;
+		LastActor = nullptr;
+		GetPawn()->bUseControllerRotationYaw = false;
+		UE_LOG(LogTemp, Display, TEXT("Locked off"));
+	}
+	else
+	{
+		CameraTrace(); // Run sphere trace logic again
+		bIsLockedOn = IsValid(CurrentTarget); // only true if something was found
+		GetPawn()->bUseControllerRotationYaw = true;
+		UE_LOG(LogTemp, Display, TEXT("Locked on"));
+		
 	}
 }
 
